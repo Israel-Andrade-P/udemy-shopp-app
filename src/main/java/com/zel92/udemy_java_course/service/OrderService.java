@@ -27,6 +27,6 @@ public class OrderService {
     }
 
     private Order findById(Long id){
-        return orderRepository.findById(id).orElseThrow(() -> new OrderNotFoundException("User with ID: " + id + " not found"));
+        return orderRepository.findById(id).orElseThrow(() -> new OrderNotFoundException("Order with ID: " + id + " not found"));
     }
 }

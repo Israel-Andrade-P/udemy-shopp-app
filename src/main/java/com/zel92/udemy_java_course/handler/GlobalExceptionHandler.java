@@ -4,6 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.zel92.udemy_java_course.exception.CategoryNotFoundException;
 import com.zel92.udemy_java_course.exception.OrderNotFoundException;
 import com.zel92.udemy_java_course.exception.UserNotFoundException;
 
@@ -17,6 +18,11 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(OrderNotFoundException.class)
     public ResponseEntity<String> handler(OrderNotFoundException exp){
+        return ResponseEntity.unprocessableEntity().body(exp.getMessage());
+    }
+
+    @ExceptionHandler(CategoryNotFoundException.class)
+    public ResponseEntity<String> handler(CategoryNotFoundException exp){
         return ResponseEntity.unprocessableEntity().body(exp.getMessage());
     }
 }
