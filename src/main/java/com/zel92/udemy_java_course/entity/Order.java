@@ -39,6 +39,7 @@ public class Order {
     @Column(name = "last_modified", insertable = false)
     @LastModifiedDate
     private LocalDateTime lastModifiedAt;
+    private String orderStatus;
     @ManyToOne
     @JoinColumn(name = "client_id")
     private User client;

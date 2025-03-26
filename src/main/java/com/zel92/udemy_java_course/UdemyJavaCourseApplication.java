@@ -1,6 +1,9 @@
 package com.zel92.udemy_java_course;
 
+import com.zel92.udemy_java_course.entity.Order;
 import com.zel92.udemy_java_course.entity.User;
+import com.zel92.udemy_java_course.enumeration.OrderStatus;
+import com.zel92.udemy_java_course.repository.OrderRepository;
 import com.zel92.udemy_java_course.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -17,7 +20,7 @@ public class UdemyJavaCourseApplication {
 	}
 
 	@Bean
-	public CommandLineRunner runner(UserRepository userRepository){
+	public CommandLineRunner runner(UserRepository userRepository, OrderRepository orderRepository){
 		return args -> {
 			var u1 = User.builder()
 					.name("Zel")
@@ -31,8 +34,26 @@ public class UdemyJavaCourseApplication {
 					.password("1212")
 					.telephone("222")
 					.build();
+			
+			var o1 = Order.builder()
+					.client(u1)
+					.orderStatus(OrderStatus.PAID.getStatus())
+					.build();	
+			var o2 = Order.builder()
+					.client(u2)
+					.orderStatus(OrderStatus.WAITING_PAYMENT.getStatus())
+					.build();
+			var o3 = Order.builder()
+					.client(u1)
+					.orderStatus(OrderStatus.DELIVERED.getStatus())
+					.build();			
+
 			userRepository.save(u1);
 			userRepository.save(u2);
+
+			orderRepository.save(o1);
+			orderRepository.save(o2);
+			orderRepository.save(o3);
 		};
 	}
 }
