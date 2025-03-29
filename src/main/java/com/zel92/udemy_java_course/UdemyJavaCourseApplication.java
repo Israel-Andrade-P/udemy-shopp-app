@@ -2,11 +2,16 @@ package com.zel92.udemy_java_course;
 
 import com.zel92.udemy_java_course.entity.Category;
 import com.zel92.udemy_java_course.entity.Order;
+import com.zel92.udemy_java_course.entity.Product;
 import com.zel92.udemy_java_course.entity.User;
 import com.zel92.udemy_java_course.enumeration.OrderStatus;
 import com.zel92.udemy_java_course.repository.CategoryRepository;
 import com.zel92.udemy_java_course.repository.OrderRepository;
+import com.zel92.udemy_java_course.repository.ProductRepository;
 import com.zel92.udemy_java_course.repository.UserRepository;
+
+import java.math.BigDecimal;
+
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -22,7 +27,10 @@ public class UdemyJavaCourseApplication {
 	}
 
 	@Bean
-	public CommandLineRunner runner(UserRepository userRepository, OrderRepository orderRepository, CategoryRepository categoryRepository){
+	public CommandLineRunner runner(UserRepository userRepository, 
+									OrderRepository orderRepository, 
+									CategoryRepository categoryRepository, 
+									ProductRepository productRepository){
 		return args -> {
 
 			var c1 = Category.builder()
@@ -51,7 +59,30 @@ public class UdemyJavaCourseApplication {
 					.password("1212")
 					.telephone("222")
 					.build();
+
+			userRepository.save(u1);
+			userRepository.save(u2);
+
+			var p1 = Product.builder()
+						.name("Lord of The Rings")
+						.description("Cool book")
+						.price(BigDecimal.valueOf(29.99))				
+						.build();
+			var p2 = Product.builder()
+						.name("Micro-wave")
+						.description("Cool wave")
+						.price(BigDecimal.valueOf(229.99))				
+						.build();
+			var p3 = Product.builder()
+						.name("Shoes")
+						.description("Cool shoe")
+						.price(BigDecimal.valueOf(49.99))				
+						.build();					
 			
+			productRepository.save(p1);
+			productRepository.save(p2);
+			productRepository.save(p3);			
+
 			var o1 = Order.builder()
 					.client(u1)
 					.orderStatus(OrderStatus.PAID.getStatus())
@@ -64,9 +95,6 @@ public class UdemyJavaCourseApplication {
 					.client(u1)
 					.orderStatus(OrderStatus.DELIVERED.getStatus())
 					.build();			
-
-			userRepository.save(u1);
-			userRepository.save(u2);
 
 			orderRepository.save(o1);
 			orderRepository.save(o2);
