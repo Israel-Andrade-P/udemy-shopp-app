@@ -2,15 +2,18 @@ package com.zel92.udemy_java_course;
 
 import com.zel92.udemy_java_course.entity.Category;
 import com.zel92.udemy_java_course.entity.Order;
+import com.zel92.udemy_java_course.entity.OrderItem;
 import com.zel92.udemy_java_course.entity.Product;
 import com.zel92.udemy_java_course.entity.User;
 import com.zel92.udemy_java_course.enumeration.OrderStatus;
 import com.zel92.udemy_java_course.repository.CategoryRepository;
+import com.zel92.udemy_java_course.repository.OrderItemRepository;
 import com.zel92.udemy_java_course.repository.OrderRepository;
 import com.zel92.udemy_java_course.repository.ProductRepository;
 import com.zel92.udemy_java_course.repository.UserRepository;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -30,7 +33,8 @@ public class UdemyJavaCourseApplication {
 	public CommandLineRunner runner(UserRepository userRepository, 
 									OrderRepository orderRepository, 
 									CategoryRepository categoryRepository, 
-									ProductRepository productRepository){
+									ProductRepository productRepository,
+									OrderItemRepository orderItemRepository){
 		return args -> {
 
 			var c1 = Category.builder()
@@ -42,10 +46,14 @@ public class UdemyJavaCourseApplication {
 			var c3 = Category.builder()
 					.title("Computers")
 					.build();	
+			var c4 = Category.builder()
+					.title("Clothing")
+					.build();		
 					
 			categoryRepository.save(c1);
 			categoryRepository.save(c2);
-			categoryRepository.save(c3);		
+			categoryRepository.save(c3);
+			categoryRepository.save(c4);		
 
 			var u1 = User.builder()
 					.name("Zel")
@@ -77,11 +85,23 @@ public class UdemyJavaCourseApplication {
 						.name("Shoes")
 						.description("Cool shoe")
 						.price(BigDecimal.valueOf(49.99))				
-						.build();					
+						.build();		
+			var p4 = Product.builder()
+						.name("Smart TV")
+						.description("Cool tv bro")
+						.price(BigDecimal.valueOf(49.99))				
+						.build();
+			
+			p1.getCategories().add(c2);
+			p2.getCategories().add(c1);
+			p3.getCategories().add(c4);
+			p4.getCategories().add(c1);	
+			p4.getCategories().add(c3);		
 			
 			productRepository.save(p1);
 			productRepository.save(p2);
-			productRepository.save(p3);			
+			productRepository.save(p3);	
+			productRepository.save(p4);		
 
 			var o1 = Order.builder()
 					.client(u1)
@@ -99,6 +119,13 @@ public class UdemyJavaCourseApplication {
 			orderRepository.save(o1);
 			orderRepository.save(o2);
 			orderRepository.save(o3);
+
+			OrderItem ot1 = new OrderItem(o1, p1, p1.getPrice(), 2);
+			OrderItem ot2 = new OrderItem(o1, p3, p3.getPrice(), 1);
+			OrderItem ot3 = new OrderItem(o2, p3, p3.getPrice(), 2);
+			OrderItem ot4 = new OrderItem(o3, p4, p4.getPrice(), 3);
+
+			orderItemRepository.saveAll(Arrays.asList(ot1, ot2, ot3, ot4));
 		};
 	}
 }

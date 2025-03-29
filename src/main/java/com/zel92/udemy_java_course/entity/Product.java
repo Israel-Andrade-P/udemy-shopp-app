@@ -2,11 +2,14 @@ package com.zel92.udemy_java_course.entity;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -14,8 +17,10 @@ import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -45,7 +50,11 @@ public class Product {
     @Column(name = "last_modified", insertable = false)
     @LastModifiedDate
     private LocalDateTime lastModifiedAt;
-    @Transient
-    private Set<Category> categories;
+    @JsonIgnore
+    @ManyToMany
+    @JoinTable(name = "products_categories",
+               joinColumns = @JoinColumn(name = "product_id"),
+               inverseJoinColumns = @JoinColumn(name = "category_id"))
+    private final Set<Category> categories = new HashSet<>();
 }
 

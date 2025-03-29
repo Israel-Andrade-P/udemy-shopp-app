@@ -11,6 +11,7 @@ public class CategoryMapper {
     public CategoryResponse fromCategory(Category category){
         return CategoryResponse
         .builder()
+        .title(category.getTitle())
         .build();
     }
 }
