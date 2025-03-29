@@ -3,6 +3,7 @@ package com.zel92.udemy_java_course;
 import com.zel92.udemy_java_course.entity.Category;
 import com.zel92.udemy_java_course.entity.Order;
 import com.zel92.udemy_java_course.entity.OrderItem;
+import com.zel92.udemy_java_course.entity.Payment;
 import com.zel92.udemy_java_course.entity.Product;
 import com.zel92.udemy_java_course.entity.User;
 import com.zel92.udemy_java_course.enumeration.OrderStatus;
@@ -126,6 +127,17 @@ public class UdemyJavaCourseApplication {
 			OrderItem ot4 = new OrderItem(o3, p4, p4.getPrice(), 3);
 
 			orderItemRepository.saveAll(Arrays.asList(ot1, ot2, ot3, ot4));
+
+			Payment pay1 = Payment.builder()
+						   .order(o1)
+						   .build();
+			Payment pay2 = Payment.builder()
+						   .order(o3)
+						   .build();	
+			o1.setPayment(pay1);
+			o3.setPayment(pay2);			   		   
+			orderRepository.save(o1);
+			orderRepository.save(o3);			   
 		};
 	}
 }
