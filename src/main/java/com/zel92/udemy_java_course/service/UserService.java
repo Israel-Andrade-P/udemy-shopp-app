@@ -3,6 +3,7 @@ package com.zel92.udemy_java_course.service;
 import java.util.List;
 
 import com.zel92.udemy_java_course.dto.UserRequest;
+import io.micrometer.common.util.StringUtils;
 import org.springframework.stereotype.Service;
 
 import com.zel92.udemy_java_course.dto.UserResponse;
@@ -33,6 +34,22 @@ public class UserService {
 
     public void delete(Long id){
         userRepository.delete(findById(id));
+    }
+
+    public void update(Long id, UserRequest newData){
+        var dbUser = findById(id);
+
+        if(!StringUtils.isBlank(newData.name())){
+            dbUser.setName(newData.name());
+        }
+        if(!StringUtils.isBlank(newData.email())){
+            dbUser.setEmail(newData.email());
+        }
+        if(!StringUtils.isBlank(newData.telephone())){
+            dbUser.setTelephone(newData.telephone());
+        }
+
+        userRepository.save(dbUser);
     }
 
     private User findById(Long id){
