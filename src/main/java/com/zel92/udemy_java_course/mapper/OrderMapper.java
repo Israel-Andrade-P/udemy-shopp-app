@@ -12,13 +12,14 @@ import lombok.RequiredArgsConstructor;
 public class OrderMapper {
     private final UserMapper userMapper;
     private final ProductMapper productMapper;
-    
-    public OrderResponse fromOrder(Order order){
+
+    public OrderResponse fromOrder(Order order) {
         return OrderResponse.builder()
-        .createdAt(order.getCreatedAt())
-        .status(order.getOrderStatus())
-        .client(userMapper.fromUser(order.getClient()))
-        .items(order.getOrderItems().stream().map(orderItem -> productMapper.fromProduct(orderItem.getProduct())).toList())
-        .build();
+                .createdAt(order.getCreatedAt())
+                .status(order.getOrderStatus())
+                .client(userMapper.fromUser(order.getClient()))
+                .items(order.getOrderItems().stream().map(productMapper::fromProduct).toList())
+                .total(order.total())
+                .build();
     }
 }

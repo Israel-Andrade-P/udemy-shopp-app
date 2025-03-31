@@ -6,6 +6,6 @@ import java.util.List;
 import lombok.Builder;
 
 @Builder
-public record ProductResponse(String name, String description, BigDecimal price, List<CategoryResponse> categories) {
+public record ProductResponse(String name, String description, BigDecimal price, Integer quantity, List<CategoryResponse> categories) {
 
 }

@@ -58,6 +58,8 @@ public class OrderItem {
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
-
     
+    public BigDecimal getSubTotal(){
+        return price.multiply(BigDecimal.valueOf(quantity));
+    }
 }
